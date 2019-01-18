@@ -1,0 +1,15 @@
+{
+  "id": "foamfix",
+  "name": "FoamFix",
+  "description": "Memory usage optimization mod.",
+  "version": "0.12.0",
+  "side": "universal",
+  "initializers": [
+  ],
+  "requires": {
+  },
+  "mixins": {
+    "client": "foamfix.mixins.client.json",
+    "common": "foamfix.mixins.common.json"
+  }
+}

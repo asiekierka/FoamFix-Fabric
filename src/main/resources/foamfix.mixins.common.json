@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "pl.asie.foamfix.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "state.MixinStateFactoryBuilder"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
