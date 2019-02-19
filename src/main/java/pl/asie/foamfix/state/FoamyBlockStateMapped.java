@@ -32,17 +32,15 @@ import com.google.common.collect.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.property.Property;
-import net.minecraft.util.registry.Registry;
-import pl.asie.foamfix.state.PropertyValueMapper;
 
 import java.util.Map;
 
-public class FoamyBlockState extends BlockState {
+public class FoamyBlockStateMapped extends BlockState {
 	protected final PropertyValueMapper<BlockState> owner;
 	protected final ImmutableMap<Property<?>, Comparable<?>> properties;
 	protected int value;
 
-	public FoamyBlockState(PropertyValueMapper<BlockState> owner, Block blockIn, ImmutableMap<Property<?>, Comparable<?>> propertiesIn) {
+	public FoamyBlockStateMapped(PropertyValueMapperImpl<BlockState> owner, Block blockIn, ImmutableMap<Property<?>, Comparable<?>> propertiesIn) {
 		super(blockIn, propertiesIn);
 		this.owner = owner;
 		this.properties = propertiesIn;
@@ -50,7 +48,7 @@ public class FoamyBlockState extends BlockState {
 
 	@Override
 	public <T extends Comparable<T>, V extends T> BlockState with(Property<T> property, V value) {
-		BlockState state = owner.withProperty(this.value, property, value);
+		BlockState state = owner.with(this.value, property, value);
 
 		if (state == null) {
 			Comparable<?> comparable = this.properties.get(property);

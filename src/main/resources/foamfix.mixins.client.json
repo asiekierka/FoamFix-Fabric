@@ -3,7 +3,9 @@
   "package": "pl.asie.foamfix.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "client.MixinBasicBakedModel"
+    "client.MixinBasicBakedModel",
+    "client.MixinMultipartBakedModel",
+    "client.MixinWeightedBakedModel"
   ],
   "injectors": {
     "defaultRequire": 1

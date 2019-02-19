@@ -36,9 +36,8 @@ import net.minecraft.state.PropertyContainer;
 import net.minecraft.state.StateFactory;
 import net.minecraft.state.property.Property;
 
-import java.util.Collections;
 import java.util.Map;
-import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class FoamyStateFactory<O, S extends PropertyContainer<S>> extends StateFactory<O, S> {
 	public <A extends AbstractPropertyContainer<O, S>> FoamyStateFactory(O baseObject, StateFactory.Factory<O, S, A> factory, Map<String, Property<?>> map) {
@@ -52,7 +51,7 @@ public class FoamyStateFactory<O, S extends PropertyContainer<S>> extends StateF
 	private static <O, S extends PropertyContainer<S>, A extends AbstractPropertyContainer<O, S>> StateFactory.Factory<O, S, A> getFactory(O baseObject, StateFactory.Factory<O, S, A> fallback) {
 		if (baseObject instanceof Block) {
 			//noinspection unchecked
-			return (Factory<O, S, A>) new Factory<Block, BlockState, BlockState>(FoamyBlockState::new);
+			return (Factory<O, S, A>) new Factory<Block, BlockState, BlockState>(FoamyBlockStateMapped::new, FoamyBlockStateEmpty::new);
 		} else {
 			System.err.println("[FoamFix/FoamyStateFactory] Should not be here! Is hasFactory matching getFactory? " + baseObject.getClass().getName());
 			return fallback;
@@ -60,21 +59,27 @@ public class FoamyStateFactory<O, S extends PropertyContainer<S>> extends StateF
 	}
 
 	private interface MappedStateFactory<O, S extends PropertyContainer<S>, A extends AbstractPropertyContainer<O, S>> {
-		A create(PropertyValueMapper<S> mapper, O baseObject, ImmutableMap<Property<?>, Comparable<?>> map);
+		A create(PropertyValueMapperImpl<S> mapper, O baseObject, ImmutableMap<Property<?>, Comparable<?>> map);
 	}
 
 	private static class Factory<O, S extends PropertyContainer<S>, A extends AbstractPropertyContainer<O, S>> implements StateFactory.Factory<O, S, A> {
 		private final MappedStateFactory<O, S, A> factory;
-		private PropertyValueMapper<S> mapper;
+		private final Function<O, A> emptyFactory;
+		private PropertyValueMapperImpl<S> mapper;
 
-		public Factory(MappedStateFactory<O, S, A> factory) {
+		public Factory(MappedStateFactory<O, S, A> factory, Function<O, A> emptyFactory) {
 			this.factory = factory;
+			this.emptyFactory = emptyFactory;
 		}
 
 		@Override
 		public A create(O var1, ImmutableMap<Property<?>, Comparable<?>> var2) {
+			if (var2.isEmpty()) {
+				return emptyFactory.apply(var1);
+			}
+
 			if (mapper == null) {
-				mapper = new PropertyValueMapper<>(var2.keySet());
+				mapper = new PropertyValueMapperImpl<>(var2.keySet());
 			}
 
 			return factory.create(mapper, var1, var2);
