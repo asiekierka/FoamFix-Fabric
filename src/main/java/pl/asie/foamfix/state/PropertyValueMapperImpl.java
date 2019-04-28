@@ -102,7 +102,7 @@ public class PropertyValueMapperImpl<C extends PropertyContainer<C>> implements 
 	}
 
 	public <T extends Comparable<T>, V extends T> C with(int value, Property<T> property, V propertyValue) {
-		int bitPos = entryPositionMap.get(property.getName());
+		int bitPos = entryPositionMap.getInt(property.getName());
 		if (bitPos >= 0) {
 			PropertyOrdering.Entry e = PropertyOrdering.getEntry(property);
 			int nv = e.get(propertyValue);

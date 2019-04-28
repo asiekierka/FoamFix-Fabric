@@ -46,7 +46,7 @@ public class FoamyBlockStateEmpty extends BlockState {
 	}
 
 	@Override
-	public void method_11571(Map<Map<Property<?>, Comparable<?>>, BlockState> map_1) {
+	public void createWithTable(Map<Map<Property<?>, Comparable<?>>, BlockState> map_1) {
 
 	}
 }

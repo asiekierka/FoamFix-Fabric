@@ -1,15 +1,15 @@
 {
+  "schemaVersion": 1,
   "id": "foamfix",
   "name": "FoamFix",
   "description": "Memory usage optimization mod.",
-  "version": "0.12.0",
-  "side": "universal",
-  "initializers": [
-  ],
-  "requires": {
+  "version": "0.12.1",
+  "icon": "assets/foamfix/icon.png",
+  "contact": {
+    "homepage": "https://charset.asie.pl",
+    "irc": "irc://irc.esper.net:6667/charset"
   },
-  "mixins": {
-    "client": "foamfix.mixins.client.json",
-    "common": "foamfix.mixins.common.json"
-  }
+  "mixins": [
+    "foamfix.mixins.json"
+  ]
 }
