@@ -3,7 +3,7 @@
   "id": "foamfix",
   "name": "FoamFix",
   "description": "Memory usage optimization mod.",
-  "version": "0.12.1",
+  "version": "0.12.2",
   "icon": "assets/foamfix/icon.png",
   "contact": {
     "homepage": "https://charset.asie.pl",

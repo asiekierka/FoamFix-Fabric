@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.2.2-SNAPSHOT'
+	id 'fabric-loom' version '0.2.6-SNAPSHOT'
 	id 'net.minecrell.licenser' version '0.4.1'
 }
 
@@ -7,15 +7,15 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 archivesBaseName = "foamfix"
-version = "0.12.1"
+version = "0.12.2"
 
 minecraft {
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:1.14"
-	mappings "net.fabricmc:yarn:1.14+build.3"
-	modCompile "net.fabricmc:fabric-loader:0.4.5+build.140"
+	minecraft "com.mojang:minecraft:1.15.2"
+	mappings "net.fabricmc:yarn:1.15.2+build.14:v2"
+	modImplementation "net.fabricmc:fabric-loader:0.7.8+build.184"
 }
 
 license {
