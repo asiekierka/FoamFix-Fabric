@@ -1,6 +1,7 @@
 plugins {
 	id 'fabric-loom' version '0.2.6-SNAPSHOT'
 	id 'net.minecrell.licenser' version '0.4.1'
+	id "com.matthewprenger.cursegradle" version "1.4.0"
 }
 
 sourceCompatibility = 1.8
@@ -38,3 +39,28 @@ license {
 //	classifier = 'sources'
 //	from sourceSets.main.allSource
 // }
+
+curseforge {
+	if(project.hasProperty("curseforge_api_key")) {
+		apiKey = project.properties.curseforge_api_key
+	}
+
+	project {
+		id = "278494"
+
+		releaseType = "beta"
+		addGameVersion "1.15.2"
+		addGameVersion "Fabric"
+
+		mainArtifact(remapJar) {
+			displayName = "FoamFix ${version} (1.15.2)"
+		}
+
+		afterEvaluate {
+			uploadTask.dependsOn remapJar
+		}
+	}
+	options {
+		forgeGradleIntegration = false
+	}
+}
