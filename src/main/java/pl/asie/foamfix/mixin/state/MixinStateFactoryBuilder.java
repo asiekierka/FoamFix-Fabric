@@ -29,8 +29,8 @@
 package pl.asie.foamfix.mixin.state;
 
 import com.google.common.collect.Maps;
-import net.minecraft.state.AbstractPropertyContainer;
-import net.minecraft.state.StateFactory;
+import net.minecraft.state.State;
+import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Property;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -41,18 +41,18 @@ import pl.asie.foamfix.state.FoamyStateFactory;
 
 import java.util.Map;
 
-@Mixin(StateFactory.Builder.class)
+@Mixin(StateManager.Builder.class)
 public class MixinStateFactoryBuilder {
 	@Shadow
-	private Object baseObject;
+	private Object owner;
 	@Shadow
-	private Map<String, Property<?>> propertyMap;
+	private Map<String, Property<?>> namedProperties;
 
 	@Inject(at = @At("HEAD"), method = "build", cancellable = true)
-	public void beforeBuild(StateFactory.Factory factory, CallbackInfoReturnable<StateFactory<?, ?>> info) {
-		if (FoamyStateFactory.hasFactory(baseObject)) {
+	public void beforeBuild(StateManager.Factory factory, CallbackInfoReturnable<StateManager<?, ?>> info) {
+		if (FoamyStateFactory.hasFactory(owner)) {
 			//noinspection unchecked
-			info.setReturnValue(new FoamyStateFactory(baseObject, factory, propertyMap));
+			info.setReturnValue(new FoamyStateFactory(owner, factory, namedProperties));
 			info.cancel();
 		}
 	}

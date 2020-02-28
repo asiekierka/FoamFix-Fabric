@@ -31,16 +31,16 @@ package pl.asie.foamfix.state;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.state.AbstractPropertyContainer;
-import net.minecraft.state.PropertyContainer;
-import net.minecraft.state.StateFactory;
+import net.minecraft.state.AbstractState;
+import net.minecraft.state.State;
+import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Property;
 
 import java.util.Map;
 import java.util.function.Function;
 
-public class FoamyStateFactory<O, S extends PropertyContainer<S>> extends StateFactory<O, S> {
-	public <A extends AbstractPropertyContainer<O, S>> FoamyStateFactory(O baseObject, StateFactory.Factory<O, S, A> factory, Map<String, Property<?>> map) {
+public class FoamyStateFactory<O, S extends State<S>> extends StateManager<O, S> {
+	public <A extends AbstractState<O, S>> FoamyStateFactory(O baseObject, StateManager.Factory<O, S, A> factory, Map<String, Property<?>> map) {
 		super(baseObject, getFactory(baseObject, factory), map);
 	}
 
@@ -48,7 +48,7 @@ public class FoamyStateFactory<O, S extends PropertyContainer<S>> extends StateF
 		return baseObject instanceof Block;
 	}
 
-	private static <O, S extends PropertyContainer<S>, A extends AbstractPropertyContainer<O, S>> StateFactory.Factory<O, S, A> getFactory(O baseObject, StateFactory.Factory<O, S, A> fallback) {
+	private static <O, S extends State<S>, A extends AbstractState<O, S>> StateManager.Factory<O, S, A> getFactory(O baseObject, StateManager.Factory<O, S, A> fallback) {
 		if (baseObject instanceof Block) {
 			//noinspection unchecked
 			return (Factory<O, S, A>) new Factory<Block, BlockState, BlockState>(FoamyBlockStateMapped::new, FoamyBlockStateEmpty::new);
@@ -58,11 +58,11 @@ public class FoamyStateFactory<O, S extends PropertyContainer<S>> extends StateF
 		}
 	}
 
-	private interface MappedStateFactory<O, S extends PropertyContainer<S>, A extends AbstractPropertyContainer<O, S>> {
+	private interface MappedStateFactory<O, S extends State<S>, A extends AbstractState<O, S>> {
 		A create(PropertyValueMapperImpl<S> mapper, O baseObject, ImmutableMap<Property<?>, Comparable<?>> map);
 	}
 
-	private static class Factory<O, S extends PropertyContainer<S>, A extends AbstractPropertyContainer<O, S>> implements StateFactory.Factory<O, S, A> {
+	private static class Factory<O, S extends State<S>, A extends AbstractState<O, S>> implements StateManager.Factory<O, S, A> {
 		private final MappedStateFactory<O, S, A> factory;
 		private final Function<O, A> emptyFactory;
 		private PropertyValueMapperImpl<S> mapper;

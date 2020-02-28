@@ -35,17 +35,17 @@ import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.state.PropertyContainer;
+import net.minecraft.state.State;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.IntegerProperty;
+import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Property;
 import net.minecraft.util.math.MathHelper;
 import pl.asie.foamfix.util.HashingStrategies;
 
 import java.util.*;
 
-public class PropertyValueMapperImpl<C extends PropertyContainer<C>> implements PropertyValueMapper<C> {
+public class PropertyValueMapperImpl<C extends State<C>> implements PropertyValueMapper<C> {
 	private static final Comparator<? super Property<?>> COMPARATOR_BIT_FITNESS = (Comparator<Property<?>>) (first, second) -> {
 		int diff1 = PropertyOrdering.getEntry(first).bitSize - first.getValues().size();
 		int diff2 = PropertyOrdering.getEntry(second).bitSize - second.getValues().size();
@@ -60,7 +60,7 @@ public class PropertyValueMapperImpl<C extends PropertyContainer<C>> implements 
 
 	private final PropertyOrdering.Entry[] entryList;
 	private final Object2IntOpenHashMap<String> entryPositionMap;
-	private final PropertyContainer[] stateMap;
+	private final State[] stateMap;
 
 	public PropertyValueMapperImpl(Collection<Property<?>> properties) {
 		entryList = new PropertyOrdering.Entry[properties.size()];
@@ -83,9 +83,9 @@ public class PropertyValueMapperImpl<C extends PropertyContainer<C>> implements 
 		}
 
 		if (lastEntry == null) {
-			stateMap = new PropertyContainer[1 << bitPos];
+			stateMap = new State[1 << bitPos];
 		} else {
-			stateMap = new PropertyContainer[(1 << (bitPos - lastEntry.bits)) * lastEntry.property.getValues().size()];
+			stateMap = new State[(1 << (bitPos - lastEntry.bits)) * lastEntry.property.getValues().size()];
 		}
 	}
 
