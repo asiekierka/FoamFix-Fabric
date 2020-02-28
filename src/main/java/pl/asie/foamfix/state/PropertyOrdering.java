@@ -8,7 +8,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.IntegerProperty;
+import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Property;
 import net.minecraft.util.math.MathHelper;
 import pl.asie.foamfix.util.HashingStrategies;
@@ -97,7 +97,7 @@ public class PropertyOrdering {
 		}
 
 		public static Entry create(EnumProperty entry) {
-			Object[] values = entry.getValueClass().getEnumConstants();
+			Object[] values = entry.getType().getEnumConstants();
 
 			if (entry.getValues().size() == values.length) {
 				return new EnumEntrySorted(entry, values.length);
@@ -146,7 +146,7 @@ public class PropertyOrdering {
 			return values.get(v);
 		}
 
-		public static Entry create(IntegerProperty entry) {
+		public static Entry create(IntProperty entry) {
 			List<Integer> sorted = Lists.newArrayList(entry.getValues());
 			sorted.sort(Comparator.naturalOrder());
 
@@ -170,8 +170,8 @@ public class PropertyOrdering {
 	static Entry getEntry(Property property) {
 		Entry e = entryMap.get(property);
 		if (e == null) {
-			if (property instanceof IntegerProperty) {
-				e = IntegerEntry.create((IntegerProperty) property);
+			if (property instanceof IntProperty) {
+				e = IntegerEntry.create((IntProperty) property);
 			} else if (property.getClass() == BooleanProperty.class && property.getValues().size() == 2) {
 				e = new BooleanEntry(property);
 			} else if (property instanceof EnumProperty) {
